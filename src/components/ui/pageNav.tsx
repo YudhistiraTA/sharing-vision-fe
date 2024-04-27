@@ -1,17 +1,20 @@
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import { useSearchParams } from 'react-router-dom'
 
 export default function PageNav({ currentLength }: { currentLength: number }) {
 	const [searchParams, setSearchParams] = useSearchParams()
 	const page = useMemo(() => +(searchParams.get('page') || 1), [searchParams])
-	function changePage(direction: 'next' | 'prev') {
-		const next = direction === 'next'
-		setSearchParams({
-			...Object.fromEntries(searchParams),
-			page: next ? String(page + 1) : String(page - 1 > 0 ? page - 1 : 1),
-		})
-	}
-	if (page <= 1 && currentLength < 10) return null
+	const changePage = useCallback(
+		(direction: 'next' | 'prev') => {
+			const next = direction === 'next'
+			setSearchParams({
+				...Object.fromEntries(searchParams),
+				page: next ? String(page + 1) : String(page - 1 > 0 ? page - 1 : 1),
+			})
+		},
+		[page, searchParams, setSearchParams],
+	)
+	if (page <= 1 && currentLength !== 0 && currentLength < 10) return null
 	return (
 		<div className="join grid grid-cols-2">
 			<button

@@ -5,13 +5,23 @@ import Loading from '@/components/ui/Loading'
 import PageNav from '@/components/ui/pageNav'
 import { Article } from '@/models/article'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { Link } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 
 function Actions({ id }: { id: number }) {
 	const queryClient = useQueryClient()
+	const [searchParams, setSearchParams] = useSearchParams()
+	const page = +(searchParams.get('page') || 1)
 	const deleteMutation = useMutation({
 		mutationFn: deleteArticle,
-		onSuccess: () => queryClient.invalidateQueries({ queryKey: ['articles'] }),
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: ['articles'] })
+			if (page > 1) {
+				setSearchParams({
+					...Object.fromEntries(searchParams),
+					page: String(page - 1),
+				})
+			}
+		},
 	})
 	return (
 		<div className="flex gap-2">
@@ -42,8 +52,9 @@ export default function Table({
 	}
 	if (!data?.length) {
 		return (
-			<div className="flex w-full justify-center pt-8">
+			<div className="flex w-full justify-center pt-8 flex-col items-center gap-4">
 				<h2 className="text-3xl font-semibold text-slate-500">No data</h2>
+				<PageNav currentLength={0} />
 			</div>
 		)
 	}

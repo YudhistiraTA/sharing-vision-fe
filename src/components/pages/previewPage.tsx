@@ -26,6 +26,14 @@ export default function PreviewPage() {
 	if (!isSuccess) {
 		return <Loading />
 	}
+	if (!data || !data.length) {
+		return (
+			<div className="flex flex-col items-center w-full justify-center pt-8 gap-4">
+				<h2 className="text-3xl font-semibold text-slate-500">No data</h2>
+				<PageNav currentLength={0} />
+			</div>
+		)
+	}
 	return (
 		<div className="flex flex-col gap-4">
 			{data.map((article) => (
