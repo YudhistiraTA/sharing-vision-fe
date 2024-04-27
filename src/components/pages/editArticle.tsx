@@ -1,10 +1,12 @@
 import FetchArticleById from '@/api/fetchArticleById'
 import Loading from '@/components/ui/Loading'
 import ArticleForm from '@/components/ui/articleForm'
+import useTitle from '@/hooks/useTitle'
 import { useQuery } from '@tanstack/react-query'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 export default function EditArticle() {
+	useTitle('Edit Article')
 	const { id } = useParams()
 	const { data, isSuccess, isFetching } = useQuery({
 		queryKey: ['articles', id],

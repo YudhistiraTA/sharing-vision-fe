@@ -2,6 +2,7 @@ import deleteArticle from '@/api/deleteArticle'
 import EditIcon from '@/components/icons/editIcon'
 import TrashIcon from '@/components/icons/trashIcon'
 import Loading from '@/components/ui/Loading'
+import PageNav from '@/components/ui/pageNav'
 import { Article } from '@/models/article'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { Link } from 'react-router-dom'
@@ -67,6 +68,11 @@ export default function Table({
 							</td>
 						</tr>
 					))}
+					<tr>
+						<td colSpan={2}>
+							<PageNav currentLength={data.length} />
+						</td>
+					</tr>
 				</tbody>
 			</table>
 		</div>

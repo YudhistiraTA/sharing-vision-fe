@@ -4,6 +4,7 @@ import ErrorPage from '@/components/pages/errorPage'
 import AllArticles from '@/components/pages/allArticles'
 import NewArticle from '@/components/pages/newArticle'
 import EditArticle from '@/components/pages/editArticle'
+import PreviewPage from '@/components/pages/previewPage'
 
 const router = createBrowserRouter([
 	{
@@ -13,6 +14,7 @@ const router = createBrowserRouter([
 		children: [
 			{ path: '', element: <AllArticles /> },
 			{ path: '/new', element: <NewArticle /> },
+			{ path: '/preview', element: <PreviewPage />},
 			{ path: '/edit/:id', element: <EditArticle /> },
 		],
 	},

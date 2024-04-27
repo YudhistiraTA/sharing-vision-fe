@@ -2,7 +2,7 @@ import fetchArticles, { FetchArticlesOptions } from '@/api/fetchArticles'
 import Table from '@/components/ui/table'
 import useTitle from '@/hooks/useTitle'
 import { useQuery } from '@tanstack/react-query'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 
 function isActive(tab: string, activeTab: string) {
@@ -10,23 +10,30 @@ function isActive(tab: string, activeTab: string) {
 }
 
 export default function AllArticles() {
-	useTitle('All Posts')
+	useTitle('All Articles')
 	const [queryOptions, setQueryOptions] = useState<FetchArticlesOptions>({
 		offset: 0,
 		limit: 10,
 		status: 'Publish',
 	})
 	const [searchParams, setSearchParams] = useSearchParams()
-	const activeTab =
-		(searchParams.get('tab') as 'Publish' | 'Draft' | 'Trash') || 'Publish'
+	const activeTab = useMemo(
+		() =>
+			(searchParams.get('tab') as 'Publish' | 'Draft' | 'Trash') || 'Publish',
+		[searchParams],
+	)
+	const page = useMemo(() => +(searchParams.get('page') || 1), [searchParams])
 	useEffect(() => {
 		setQueryOptions((prev) => ({ ...prev, status: activeTab }))
 	}, [activeTab])
+	useEffect(() => {
+		setQueryOptions((prev) => ({ ...prev, offset: (page - 1) * 10 }))
+	}, [page])
 	function changeTab(tab: 'Publish' | 'Draft' | 'Trash') {
 		setSearchParams({ tab })
 	}
 	const { data, isSuccess } = useQuery({
-		queryKey: ['articles', queryOptions.status],
+		queryKey: ['articles', queryOptions.status, queryOptions.offset],
 		queryFn: () => fetchArticles(queryOptions),
 	})
 	return (

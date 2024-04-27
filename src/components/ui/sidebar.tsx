@@ -10,7 +10,7 @@ function isActive(tab: string, activeTab: string, root = false) {
 export default function Sidebar() {
 	const { pathname } = useLocation()
 	return (
-		<div id="sidebar">
+		<div id="sidebar" className='h-full'>
 			<div>
 				<h1>Sharing Vision Articles</h1>
 			</div>
