@@ -12,7 +12,7 @@ export default function ErrorPage() {
 			<p>
 				<i>{error.statusText || error.message}</i>
 			</p>
-			<button onClick={() => navigate(-1)}>Return to previous page</button>
+			<button className='btn' onClick={() => navigate(-1)}>Return to previous page</button>
 		</div>
 	)
 }

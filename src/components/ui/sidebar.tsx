@@ -1,6 +1,14 @@
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
+
+function isActive(tab: string, activeTab: string, root = false) {
+	if (root) {
+		return tab === activeTab ? 'active' : ''
+	}
+	return activeTab.includes(tab) ? 'active' : ''
+}
 
 export default function Sidebar() {
+	const { pathname } = useLocation()
 	return (
 		<div id="sidebar">
 			<div>
@@ -9,13 +17,19 @@ export default function Sidebar() {
 			<nav>
 				<ul>
 					<li>
-						<Link to="/">All Posts</Link>
+						<Link to="/" className={isActive('/', pathname, true)}>
+							All Posts
+						</Link>
 					</li>
 					<li>
-						<Link to="/new">Add New</Link>
+						<Link to="/new" className={isActive('/new', pathname)}>
+							Add New
+						</Link>
 					</li>
 					<li>
-						<Link to="/preview">Preview</Link>
+						<Link to="/preview" className={isActive('/preview', pathname)}>
+							Preview
+						</Link>
 					</li>
 				</ul>
 			</nav>
