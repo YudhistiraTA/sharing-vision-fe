@@ -1,6 +1,7 @@
 import deleteArticle from '@/api/deleteArticle'
 import EditIcon from '@/components/icons/editIcon'
 import TrashIcon from '@/components/icons/trashIcon'
+import Loading from '@/components/ui/Loading'
 import { Article } from '@/models/article'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { Link } from 'react-router-dom'
@@ -36,11 +37,7 @@ export default function Table({
 	data: Article[]
 }) {
 	if (!isSuccess) {
-		return (
-			<div className="flex w-full justify-center pt-8">
-				<span className="loading loading-spinner loading-lg"></span>
-			</div>
-		)
+		return <Loading />
 	}
 	if (!data?.length) {
 		return (

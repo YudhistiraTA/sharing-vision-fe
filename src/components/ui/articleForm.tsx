@@ -27,7 +27,7 @@ export default function ArticleForm({
 		resolver: zodResolver(ArticleSchema),
 		defaultValues,
 	})
-  const navigate = useNavigate()
+	const navigate = useNavigate()
 	const queryClient = useQueryClient()
 	const articleMutation = useMutation({
 		mutationFn: PostArticle,
@@ -36,9 +36,12 @@ export default function ArticleForm({
 	function onSubmit(
 		data: z.infer<typeof ArticleSchema> & { status: 'Publish' | 'Draft' },
 	) {
-		articleMutation.mutate(data, {
-      onSuccess: () => navigate(`/?tab=${data.status}`),
-    })
+		articleMutation.mutate(
+			{ data, id },
+			{
+				onSuccess: () => navigate(`/?tab=${data.status}`),
+			},
+		)
 	}
 	function buttonClick(type: 'Publish' | 'Draft') {
 		form.handleSubmit((data) => {
